@@ -1,10 +1,10 @@
 ﻿@model IEnumerable<foodcourt.Models.Dish>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Dishes";
 }
 
-<h2>Index</h2>
+<h2>Dishes</h2>
 
 <p>
     @Html.ActionLink("Create New", "Create")
@@ -14,6 +14,12 @@
         <th>
             @Html.DisplayNameFor(model => model.Name)
         </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Description)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Price)
+        </th>
         <th></th>
     </tr>
 
@@ -21,6 +27,12 @@
     <tr>
         <td>
             @Html.DisplayFor(modelItem => item.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Description)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Price)
         </td>
         <td>
             @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |

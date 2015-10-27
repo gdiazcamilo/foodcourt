@@ -6,57 +6,36 @@
     </Key>
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Description" Type="varchar" MaxLength="150" />
+    <Property Name="Price" Type="float" />
   </EntityType>
-  <EntityType Name="Restaurant">
+  <EntityType Name="Order">
     <Key>
       <PropertyRef Name="Id" />
     </Key>
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
-  </EntityType>
-  <EntityType Name="RestaurantDish">
-    <Key>
-      <PropertyRef Name="Id" />
-    </Key>
-    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="RestaurantId" Type="int" />
+    <Property Name="UserName" Type="varchar" MaxLength="50" />
     <Property Name="DishId" Type="int" />
+    <Property Name="State" Type="bit" />
   </EntityType>
-  <Association Name="FK_RestaurantDish_Dish">
+  <Association Name="FK_Order_Dish">
     <End Role="Dish" Type="Self.Dish" Multiplicity="0..1" />
-    <End Role="RestaurantDish" Type="Self.RestaurantDish" Multiplicity="*" />
+    <End Role="Order" Type="Self.Order" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="Dish">
         <PropertyRef Name="Id" />
       </Principal>
-      <Dependent Role="RestaurantDish">
+      <Dependent Role="Order">
         <PropertyRef Name="DishId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_RestaurantDish_Restaurant">
-    <End Role="Restaurant" Type="Self.Restaurant" Multiplicity="0..1" />
-    <End Role="RestaurantDish" Type="Self.RestaurantDish" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Restaurant">
-        <PropertyRef Name="Id" />
-      </Principal>
-      <Dependent Role="RestaurantDish">
-        <PropertyRef Name="RestaurantId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
   <EntityContainer Name="foodcourtModelStoreContainer">
     <EntitySet Name="Dish" EntityType="Self.Dish" Schema="dbo" store:Type="Tables" />
-    <EntitySet Name="Restaurant" EntityType="Self.Restaurant" Schema="dbo" store:Type="Tables" />
-    <EntitySet Name="RestaurantDish" EntityType="Self.RestaurantDish" Schema="dbo" store:Type="Tables" />
-    <AssociationSet Name="FK_RestaurantDish_Dish" Association="Self.FK_RestaurantDish_Dish">
+    <EntitySet Name="Order" EntityType="Self.Order" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_Order_Dish" Association="Self.FK_Order_Dish">
       <End Role="Dish" EntitySet="Dish" />
-      <End Role="RestaurantDish" EntitySet="RestaurantDish" />
-    </AssociationSet>
-    <AssociationSet Name="FK_RestaurantDish_Restaurant" Association="Self.FK_RestaurantDish_Restaurant">
-      <End Role="Restaurant" EntitySet="Restaurant" />
-      <End Role="RestaurantDish" EntitySet="RestaurantDish" />
+      <End Role="Order" EntitySet="Order" />
     </AssociationSet>
   </EntityContainer>
 </Schema>

@@ -1,0 +1,45 @@
+﻿@model IEnumerable<foodcourt.Models.Order>
+
+@{
+    ViewBag.Title = "Orders";
+}
+
+<h2>Orders</h2>
+
+<p>
+  
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayName("User")
+        </th>
+        
+        <th>
+            @Html.DisplayName("Dish")
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.State)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.UserName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Dish.Name)
+        </td>
+        <td>
+           
+        </td>
+        
+        <td>
+            @Html.ActionLink("Send", "Send", new { id = item.Id }, new { @class= "btn btn-success" })
+        </td>
+    </tr>
+}
+
+</table>

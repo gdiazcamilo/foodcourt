@@ -10,116 +10,121 @@ using foodcourt.Models;
 
 namespace foodcourt.Controllers
 {
-    public class RestaurantDishController : Controller
+    public class OrderController : Controller
     {
         private FoodCourtEntities db = new FoodCourtEntities();
 
-        // GET: RestaurantDish
+        // GET: Order
         public ActionResult Index()
         {
-            var restaurantDishes = db.RestaurantDishes.Include(r => r.Dish).Include(r => r.Restaurant);
-            return View(restaurantDishes.ToList());
+            var order = db.Order.Include(o => o.Dish);
+            return View(order.ToList());
         }
 
-        // GET: RestaurantDish/Details/5
+        // GET: Order/Details/5
         public ActionResult Details(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            RestaurantDish restaurantDish = db.RestaurantDishes.Find(id);
-            if (restaurantDish == null)
+            Order order = db.Order.Find(id);
+            if (order == null)
             {
                 return HttpNotFound();
             }
-            return View(restaurantDish);
+            return View(order);
         }
 
-        // GET: RestaurantDish/Create
+        // GET: Order/Create
         public ActionResult Create()
         {
             ViewBag.DishId = new SelectList(db.Dishes, "Id", "Name");
-            ViewBag.RestaurantId = new SelectList(db.Restaurants, "Id", "Name");
             return View();
         }
 
-        // POST: RestaurantDish/Create
+        // POST: Order/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,RestaurantId,DishId")] RestaurantDish restaurantDish)
+        public ActionResult Create([Bind(Include = "Id,UserName,DishId,State")] Order order)
         {
             if (ModelState.IsValid)
             {
-                db.RestaurantDishes.Add(restaurantDish);
+                db.Order.Add(order);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            ViewBag.DishId = new SelectList(db.Dishes, "Id", "Name", restaurantDish.DishId);
-            ViewBag.RestaurantId = new SelectList(db.Restaurants, "Id", "Name", restaurantDish.RestaurantId);
-            return View(restaurantDish);
+            ViewBag.DishId = new SelectList(db.Dishes, "Id", "Name", order.DishId);
+            return View(order);
         }
 
-        // GET: RestaurantDish/Edit/5
+        // GET: Order/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            RestaurantDish restaurantDish = db.RestaurantDishes.Find(id);
-            if (restaurantDish == null)
+            Order order = db.Order.Find(id);
+            if (order == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.DishId = new SelectList(db.Dishes, "Id", "Name", restaurantDish.DishId);
-            ViewBag.RestaurantId = new SelectList(db.Restaurants, "Id", "Name", restaurantDish.RestaurantId);
-            return View(restaurantDish);
+            ViewBag.DishId = new SelectList(db.Dishes, "Id", "Name", order.DishId);
+            return View(order);
         }
 
-        // POST: RestaurantDish/Edit/5
+        // POST: Order/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,RestaurantId,DishId")] RestaurantDish restaurantDish)
+        public ActionResult Edit([Bind(Include = "Id,UserName,DishId,State")] Order order)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(restaurantDish).State = EntityState.Modified;
+                db.Entry(order).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.DishId = new SelectList(db.Dishes, "Id", "Name", restaurantDish.DishId);
-            ViewBag.RestaurantId = new SelectList(db.Restaurants, "Id", "Name", restaurantDish.RestaurantId);
-            return View(restaurantDish);
+            ViewBag.DishId = new SelectList(db.Dishes, "Id", "Name", order.DishId);
+            return View(order);
         }
 
-        // GET: RestaurantDish/Delete/5
+        // GET: Order/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            RestaurantDish restaurantDish = db.RestaurantDishes.Find(id);
-            if (restaurantDish == null)
+            Order order = db.Order.Find(id);
+            if (order == null)
             {
                 return HttpNotFound();
             }
-            return View(restaurantDish);
+            return View(order);
         }
 
-        // POST: RestaurantDish/Delete/5
+        // POST: Order/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            RestaurantDish restaurantDish = db.RestaurantDishes.Find(id);
-            db.RestaurantDishes.Remove(restaurantDish);
+            Order order = db.Order.Find(id);
+            db.Order.Remove(order);
+            db.SaveChanges();
+            return RedirectToAction("Index");
+        }
+
+        
+        public ActionResult Send(int id)
+        {
+            Order order = db.Order.Find(id);
+            db.Order.FirstOrDefault().State = true;
             db.SaveChanges();
             return RedirectToAction("Index");
         }

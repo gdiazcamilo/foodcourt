@@ -6,61 +6,38 @@
     </Key>
     <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-    <NavigationProperty Name="RestaurantDishes" Relationship="Self.FK_RestaurantDish_Dish" FromRole="Dish" ToRole="RestaurantDish" />
+    <Property Name="Description" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+    <Property Name="Price" Type="Double" />
+    <NavigationProperty Name="Order" Relationship="foodcourtModel.FK_Order_Dish" FromRole="Dish" ToRole="Order" />
   </EntityType>
-  <EntityType Name="Restaurant">
+  <EntityContainer Name="foodcourtEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Dishes" EntityType="Self.Dish" />
+    <EntitySet Name="Order" EntityType="foodcourtModel.Order" />
+    <AssociationSet Name="FK_Order_Dish" Association="foodcourtModel.FK_Order_Dish">
+      <End Role="Dish" EntitySet="Dishes" />
+      <End Role="Order" EntitySet="Order" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="Order">
     <Key>
       <PropertyRef Name="Id" />
     </Key>
     <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-    <NavigationProperty Name="RestaurantDishes" Relationship="Self.FK_RestaurantDish_Restaurant" FromRole="Restaurant" ToRole="RestaurantDish" />
-  </EntityType>
-  <EntityType Name="RestaurantDish">
-    <Key>
-      <PropertyRef Name="Id" />
-    </Key>
-    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="RestaurantId" Type="Int32" />
+    <Property Name="UserName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
     <Property Name="DishId" Type="Int32" />
-    <NavigationProperty Name="Dish" Relationship="Self.FK_RestaurantDish_Dish" FromRole="RestaurantDish" ToRole="Dish" />
-    <NavigationProperty Name="Restaurant" Relationship="Self.FK_RestaurantDish_Restaurant" FromRole="RestaurantDish" ToRole="Restaurant" />
+    <Property Name="State" Type="Boolean" />
+    <NavigationProperty Name="Dish" Relationship="foodcourtModel.FK_Order_Dish" FromRole="Order" ToRole="Dish" />
   </EntityType>
-  <Association Name="FK_RestaurantDish_Dish">
-    <End Role="Dish" Type="Self.Dish" Multiplicity="0..1" />
-    <End Role="RestaurantDish" Type="Self.RestaurantDish" Multiplicity="*" />
+  <Association Name="FK_Order_Dish">
+    <End Type="foodcourtModel.Dish" Role="Dish" Multiplicity="0..1" />
+    <End Type="foodcourtModel.Order" Role="Order" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="Dish">
         <PropertyRef Name="Id" />
       </Principal>
-      <Dependent Role="RestaurantDish">
+      <Dependent Role="Order">
         <PropertyRef Name="DishId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK_RestaurantDish_Restaurant">
-    <End Role="Restaurant" Type="Self.Restaurant" Multiplicity="0..1" />
-    <End Role="RestaurantDish" Type="Self.RestaurantDish" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Restaurant">
-        <PropertyRef Name="Id" />
-      </Principal>
-      <Dependent Role="RestaurantDish">
-        <PropertyRef Name="RestaurantId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <EntityContainer Name="foodcourtEntities" annotation:LazyLoadingEnabled="true">
-    <EntitySet Name="Dishes" EntityType="Self.Dish" />
-    <EntitySet Name="Restaurants" EntityType="Self.Restaurant" />
-    <EntitySet Name="RestaurantDishes" EntityType="Self.RestaurantDish" />
-    <AssociationSet Name="FK_RestaurantDish_Dish" Association="Self.FK_RestaurantDish_Dish">
-      <End Role="Dish" EntitySet="Dishes" />
-      <End Role="RestaurantDish" EntitySet="RestaurantDishes" />
-    </AssociationSet>
-    <AssociationSet Name="FK_RestaurantDish_Restaurant" Association="Self.FK_RestaurantDish_Restaurant">
-      <End Role="Restaurant" EntitySet="Restaurants" />
-      <End Role="RestaurantDish" EntitySet="RestaurantDishes" />
-    </AssociationSet>
-  </EntityContainer>
 </Schema>

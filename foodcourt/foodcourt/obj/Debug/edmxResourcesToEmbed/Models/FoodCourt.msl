@@ -4,25 +4,20 @@
     <EntitySetMapping Name="Dishes">
       <EntityTypeMapping TypeName="foodcourtModel.Dish">
         <MappingFragment StoreEntitySet="Dish">
+          <ScalarProperty Name="Price" ColumnName="Price" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="Name" ColumnName="Name" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="Restaurants">
-      <EntityTypeMapping TypeName="foodcourtModel.Restaurant">
-        <MappingFragment StoreEntitySet="Restaurant">
-          <ScalarProperty Name="Id" ColumnName="Id" />
-          <ScalarProperty Name="Name" ColumnName="Name" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="RestaurantDishes">
-      <EntityTypeMapping TypeName="foodcourtModel.RestaurantDish">
-        <MappingFragment StoreEntitySet="RestaurantDish">
-          <ScalarProperty Name="Id" ColumnName="Id" />
-          <ScalarProperty Name="RestaurantId" ColumnName="RestaurantId" />
+    <EntitySetMapping Name="Order">
+      <EntityTypeMapping TypeName="foodcourtModel.Order">
+        <MappingFragment StoreEntitySet="Order">
+          <ScalarProperty Name="State" ColumnName="State" />
           <ScalarProperty Name="DishId" ColumnName="DishId" />
+          <ScalarProperty Name="UserName" ColumnName="UserName" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

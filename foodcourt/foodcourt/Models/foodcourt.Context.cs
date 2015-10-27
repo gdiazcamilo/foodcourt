@@ -26,7 +26,6 @@ namespace foodcourt.Models
         }
     
         public virtual DbSet<Dish> Dishes { get; set; }
-        public virtual DbSet<Restaurant> Restaurants { get; set; }
-        public virtual DbSet<RestaurantDish> RestaurantDishes { get; set; }
+        public virtual DbSet<Order> Order { get; set; }
     }
 }

@@ -173,8 +173,7 @@
     <Compile Include="Controllers\DishController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
-    <Compile Include="Controllers\RestaurantController.cs" />
-    <Compile Include="Controllers\RestaurantDishController.cs" />
+    <Compile Include="Controllers\OrderController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -199,10 +198,7 @@
     </Compile>
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
-    <Compile Include="Models\Restaurant.cs">
-      <DependentUpon>foodcourt.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\RestaurantDish.cs">
+    <Compile Include="Models\Order.cs">
       <DependentUpon>foodcourt.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -285,16 +281,11 @@
     <Content Include="Views\Dish\Details.cshtml" />
     <Content Include="Views\Dish\Edit.cshtml" />
     <Content Include="Views\Dish\Index.cshtml" />
-    <Content Include="Views\Restaurant\Create.cshtml" />
-    <Content Include="Views\Restaurant\Delete.cshtml" />
-    <Content Include="Views\Restaurant\Details.cshtml" />
-    <Content Include="Views\Restaurant\Edit.cshtml" />
-    <Content Include="Views\Restaurant\Index.cshtml" />
-    <Content Include="Views\RestaurantDish\Create.cshtml" />
-    <Content Include="Views\RestaurantDish\Delete.cshtml" />
-    <Content Include="Views\RestaurantDish\Details.cshtml" />
-    <Content Include="Views\RestaurantDish\Edit.cshtml" />
-    <Content Include="Views\RestaurantDish\Index.cshtml" />
+    <Content Include="Views\Order\Create.cshtml" />
+    <Content Include="Views\Order\Delete.cshtml" />
+    <Content Include="Views\Order\Details.cshtml" />
+    <Content Include="Views\Order\Edit.cshtml" />
+    <Content Include="Views\Order\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

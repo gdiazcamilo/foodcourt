@@ -12,13 +12,13 @@ namespace foodcourt.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class RestaurantDish
+    public partial class Order
     {
         public int Id { get; set; }
-        public Nullable<int> RestaurantId { get; set; }
+        public string UserName { get; set; }
         public Nullable<int> DishId { get; set; }
+        public Nullable<bool> State { get; set; }
     
         public virtual Dish Dish { get; set; }
-        public virtual Restaurant Restaurant { get; set; }
     }
 }

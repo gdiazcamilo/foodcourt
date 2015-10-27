@@ -17,13 +17,15 @@ namespace foodcourt.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Dish()
         {
-            this.RestaurantDishes = new HashSet<RestaurantDish>();
+            this.Order = new HashSet<Order>();
         }
     
         public int Id { get; set; }
         public string Name { get; set; }
+        public string Description { get; set; }
+        public Nullable<double> Price { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<RestaurantDish> RestaurantDishes { get; set; }
+        public virtual ICollection<Order> Order { get; set; }
     }
 }

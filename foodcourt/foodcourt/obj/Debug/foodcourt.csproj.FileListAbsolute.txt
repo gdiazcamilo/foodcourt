@@ -66,3 +66,4 @@ F:\foodcourt\foodcourt\foodcourt\bin\Microsoft.Owin.Security.Twitter.xml
 F:\foodcourt\foodcourt\foodcourt\bin\Microsoft.Owin.Security.MicrosoftAccount.xml
 F:\foodcourt\foodcourt\foodcourt\obj\Debug\foodcourt.dll
 F:\foodcourt\foodcourt\foodcourt\obj\Debug\foodcourt.pdb
+F:\foodcourt\foodcourt\foodcourt\obj\Debug\foodcourt.csprojResolveAssemblyReference.cache

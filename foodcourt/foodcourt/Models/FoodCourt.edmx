@@ -4,68 +4,46 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="foodcourtModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="foodcourtModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Dish">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Description" Type="varchar" MaxLength="150" />
+          <Property Name="Price" Type="float" />
         </EntityType>
-        <EntityType Name="Restaurant">
+        <EntityType Name="Order">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
-        </EntityType>
-        <EntityType Name="RestaurantDish">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="RestaurantId" Type="int" />
+          <Property Name="UserName" Type="varchar" MaxLength="50" />
           <Property Name="DishId" Type="int" />
+          <Property Name="State" Type="bit" />
         </EntityType>
-        <Association Name="FK_RestaurantDish_Dish">
+        <Association Name="FK_Order_Dish">
           <End Role="Dish" Type="Self.Dish" Multiplicity="0..1" />
-          <End Role="RestaurantDish" Type="Self.RestaurantDish" Multiplicity="*" />
+          <End Role="Order" Type="Self.Order" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Dish">
               <PropertyRef Name="Id" />
             </Principal>
-            <Dependent Role="RestaurantDish">
+            <Dependent Role="Order">
               <PropertyRef Name="DishId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_RestaurantDish_Restaurant">
-          <End Role="Restaurant" Type="Self.Restaurant" Multiplicity="0..1" />
-          <End Role="RestaurantDish" Type="Self.RestaurantDish" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Restaurant">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="RestaurantDish">
-              <PropertyRef Name="RestaurantId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="foodcourtModelStoreContainer">
           <EntitySet Name="Dish" EntityType="Self.Dish" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Restaurant" EntityType="Self.Restaurant" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="RestaurantDish" EntityType="Self.RestaurantDish" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="FK_RestaurantDish_Dish" Association="Self.FK_RestaurantDish_Dish">
+          <EntitySet Name="Order" EntityType="Self.Order" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Order_Dish" Association="Self.FK_Order_Dish">
             <End Role="Dish" EntitySet="Dish" />
-            <End Role="RestaurantDish" EntitySet="RestaurantDish" />
-          </AssociationSet>
-          <AssociationSet Name="FK_RestaurantDish_Restaurant" Association="Self.FK_RestaurantDish_Restaurant">
-            <End Role="Restaurant" EntitySet="Restaurant" />
-            <End Role="RestaurantDish" EntitySet="RestaurantDish" />
+            <End Role="Order" EntitySet="Order" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="foodcourtModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -75,63 +53,40 @@
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <NavigationProperty Name="RestaurantDishes" Relationship="Self.FK_RestaurantDish_Dish" FromRole="Dish" ToRole="RestaurantDish" />
+          <Property Name="Description" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="Price" Type="Double" />
+          <NavigationProperty Name="Order" Relationship="foodcourtModel.FK_Order_Dish" FromRole="Dish" ToRole="Order" />
         </EntityType>
-        <EntityType Name="Restaurant">
+        <EntityContainer Name="foodcourtEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Dishes" EntityType="Self.Dish" />
+          <EntitySet Name="Order" EntityType="foodcourtModel.Order" />
+          <AssociationSet Name="FK_Order_Dish" Association="foodcourtModel.FK_Order_Dish">
+            <End Role="Dish" EntitySet="Dishes" />
+            <End Role="Order" EntitySet="Order" />
+          </AssociationSet>
+          </EntityContainer>
+        <EntityType Name="Order">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <NavigationProperty Name="RestaurantDishes" Relationship="Self.FK_RestaurantDish_Restaurant" FromRole="Restaurant" ToRole="RestaurantDish" />
-        </EntityType>
-        <EntityType Name="RestaurantDish">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="RestaurantId" Type="Int32" />
+          <Property Name="UserName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="DishId" Type="Int32" />
-          <NavigationProperty Name="Dish" Relationship="Self.FK_RestaurantDish_Dish" FromRole="RestaurantDish" ToRole="Dish" />
-          <NavigationProperty Name="Restaurant" Relationship="Self.FK_RestaurantDish_Restaurant" FromRole="RestaurantDish" ToRole="Restaurant" />
+          <Property Name="State" Type="Boolean" />
+          <NavigationProperty Name="Dish" Relationship="foodcourtModel.FK_Order_Dish" FromRole="Order" ToRole="Dish" />
         </EntityType>
-        <Association Name="FK_RestaurantDish_Dish">
-          <End Role="Dish" Type="Self.Dish" Multiplicity="0..1" />
-          <End Role="RestaurantDish" Type="Self.RestaurantDish" Multiplicity="*" />
+        <Association Name="FK_Order_Dish">
+          <End Type="foodcourtModel.Dish" Role="Dish" Multiplicity="0..1" />
+          <End Type="foodcourtModel.Order" Role="Order" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Dish">
               <PropertyRef Name="Id" />
             </Principal>
-            <Dependent Role="RestaurantDish">
+            <Dependent Role="Order">
               <PropertyRef Name="DishId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_RestaurantDish_Restaurant">
-          <End Role="Restaurant" Type="Self.Restaurant" Multiplicity="0..1" />
-          <End Role="RestaurantDish" Type="Self.RestaurantDish" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Restaurant">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="RestaurantDish">
-              <PropertyRef Name="RestaurantId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <EntityContainer Name="foodcourtEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="Dishes" EntityType="Self.Dish" />
-          <EntitySet Name="Restaurants" EntityType="Self.Restaurant" />
-          <EntitySet Name="RestaurantDishes" EntityType="Self.RestaurantDish" />
-          <AssociationSet Name="FK_RestaurantDish_Dish" Association="Self.FK_RestaurantDish_Dish">
-            <End Role="Dish" EntitySet="Dishes" />
-            <End Role="RestaurantDish" EntitySet="RestaurantDishes" />
-          </AssociationSet>
-          <AssociationSet Name="FK_RestaurantDish_Restaurant" Association="Self.FK_RestaurantDish_Restaurant">
-            <End Role="Restaurant" EntitySet="Restaurants" />
-            <End Role="RestaurantDish" EntitySet="RestaurantDishes" />
-          </AssociationSet>
-        </EntityContainer>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -141,29 +96,24 @@
           <EntitySetMapping Name="Dishes">
             <EntityTypeMapping TypeName="foodcourtModel.Dish">
               <MappingFragment StoreEntitySet="Dish">
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Restaurants">
-            <EntityTypeMapping TypeName="foodcourtModel.Restaurant">
-              <MappingFragment StoreEntitySet="Restaurant">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="RestaurantDishes">
-            <EntityTypeMapping TypeName="foodcourtModel.RestaurantDish">
-              <MappingFragment StoreEntitySet="RestaurantDish">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="RestaurantId" ColumnName="RestaurantId" />
+          <EntitySetMapping Name="Order">
+            <EntityTypeMapping TypeName="foodcourtModel.Order">
+              <MappingFragment StoreEntitySet="Order">
+                <ScalarProperty Name="State" ColumnName="State" />
                 <ScalarProperty Name="DishId" ColumnName="DishId" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-        </EntityContainerMapping>
+          </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
   </edmx:Runtime>
@@ -177,7 +127,7 @@
     <Options>
       <DesignerInfoPropertySet>
         <DesignerProperty Name="ValidateOnBuild" Value="true" />
-        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="False" />
         <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
         <DesignerProperty Name="UseLegacyProvider" Value="false" />
         <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
