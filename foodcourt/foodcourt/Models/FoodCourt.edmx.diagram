@@ -5,10 +5,10 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="4040720dd543476eacfa9f7f1b7e4ad8" Name="Diagram1">
-        <EntityTypeShape EntityType="foodcourtModel.Dish" Width="1.5" PointX="2.5" PointY="1" IsExpanded="true" />
-        <EntityTypeShape EntityType="foodcourtModel.Order" Width="1.5" PointX="5.875" PointY="1" />
+        <EntityTypeShape EntityType="foodcourtModel.Dish" Width="1.5" PointX="0.75" PointY="0.875" />
+        <EntityTypeShape EntityType="foodcourtModel.Order" Width="1.5" PointX="3" PointY="0.875" />
         <AssociationConnector Association="foodcourtModel.FK_Order_Dish" />
-        </Diagram>
+      </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
 </edmx:Edmx>

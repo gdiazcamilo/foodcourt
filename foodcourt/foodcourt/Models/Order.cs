@@ -16,8 +16,8 @@ namespace foodcourt.Models
     {
         public int Id { get; set; }
         public string UserName { get; set; }
-        public Nullable<int> DishId { get; set; }
-        public Nullable<bool> State { get; set; }
+        public int DishId { get; set; }
+        public Nullable<int> State { get; set; }
     
         public virtual Dish Dish { get; set; }
     }

@@ -124,7 +124,7 @@ namespace foodcourt.Controllers
         public ActionResult Send(int id)
         {
             Order order = db.Order.Find(id);
-            db.Order.FirstOrDefault().State = true;
+            order.State = 1;
             db.SaveChanges();
             return RedirectToAction("Index");
         }

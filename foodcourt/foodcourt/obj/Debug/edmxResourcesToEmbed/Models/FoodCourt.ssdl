@@ -15,11 +15,11 @@
     </Key>
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="UserName" Type="varchar" MaxLength="50" />
-    <Property Name="DishId" Type="int" />
-    <Property Name="State" Type="bit" />
+    <Property Name="DishId" Type="int" Nullable="false" />
+    <Property Name="State" Type="int" />
   </EntityType>
   <Association Name="FK_Order_Dish">
-    <End Role="Dish" Type="Self.Dish" Multiplicity="0..1" />
+    <End Role="Dish" Type="Self.Dish" Multiplicity="1" />
     <End Role="Order" Type="Self.Order" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="Dish">

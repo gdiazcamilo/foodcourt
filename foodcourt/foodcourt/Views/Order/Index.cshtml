@@ -33,7 +33,14 @@
             @Html.DisplayFor(modelItem => item.Dish.Name)
         </td>
         <td>
-           
+           @if(item.State == 1)
+           {
+               <span>Enviada</span>
+           }
+           else
+           {
+               <span>Pendiente</span>
+           }
         </td>
         
         <td>

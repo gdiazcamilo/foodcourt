@@ -20,11 +20,11 @@
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="UserName" Type="varchar" MaxLength="50" />
-          <Property Name="DishId" Type="int" />
-          <Property Name="State" Type="bit" />
+          <Property Name="DishId" Type="int" Nullable="false" />
+          <Property Name="State" Type="int" />
         </EntityType>
         <Association Name="FK_Order_Dish">
-          <End Role="Dish" Type="Self.Dish" Multiplicity="0..1" />
+          <End Role="Dish" Type="Self.Dish" Multiplicity="1" />
           <End Role="Order" Type="Self.Order" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Dish">
@@ -47,36 +47,36 @@
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="foodcourtModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="foodcourtEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Dish" EntityType="foodcourtModel.Dish" />
+          <EntitySet Name="Order" EntityType="foodcourtModel.Order" />
+          <AssociationSet Name="FK_Order_Dish" Association="foodcourtModel.FK_Order_Dish">
+            <End Role="Dish" EntitySet="Dish" />
+            <End Role="Order" EntitySet="Order" />
+          </AssociationSet>
+        </EntityContainer>
         <EntityType Name="Dish">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Description" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
           <Property Name="Price" Type="Double" />
           <NavigationProperty Name="Order" Relationship="foodcourtModel.FK_Order_Dish" FromRole="Dish" ToRole="Order" />
         </EntityType>
-        <EntityContainer Name="foodcourtEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="Dishes" EntityType="Self.Dish" />
-          <EntitySet Name="Order" EntityType="foodcourtModel.Order" />
-          <AssociationSet Name="FK_Order_Dish" Association="foodcourtModel.FK_Order_Dish">
-            <End Role="Dish" EntitySet="Dishes" />
-            <End Role="Order" EntitySet="Order" />
-          </AssociationSet>
-          </EntityContainer>
         <EntityType Name="Order">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="UserName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="DishId" Type="Int32" />
-          <Property Name="State" Type="Boolean" />
+          <Property Name="DishId" Type="Int32" Nullable="false" />
+          <Property Name="State" Type="Int32" />
           <NavigationProperty Name="Dish" Relationship="foodcourtModel.FK_Order_Dish" FromRole="Order" ToRole="Dish" />
         </EntityType>
         <Association Name="FK_Order_Dish">
-          <End Type="foodcourtModel.Dish" Role="Dish" Multiplicity="0..1" />
+          <End Type="foodcourtModel.Dish" Role="Dish" Multiplicity="1" />
           <End Type="foodcourtModel.Order" Role="Order" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Dish">
@@ -93,13 +93,13 @@
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="foodcourtModelStoreContainer" CdmEntityContainer="foodcourtEntities">
-          <EntitySetMapping Name="Dishes">
+          <EntitySetMapping Name="Dish">
             <EntityTypeMapping TypeName="foodcourtModel.Dish">
               <MappingFragment StoreEntitySet="Dish">
                 <ScalarProperty Name="Price" ColumnName="Price" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -113,7 +113,7 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          </EntityContainerMapping>
+        </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
   </edmx:Runtime>
