@@ -10,6 +10,7 @@ using foodcourt.Models;
 
 namespace foodcourt.Controllers
 {
+    [Authorize]
     public class OrderController : Controller
     {
         private FoodCourtEntities db = new FoodCourtEntities();
