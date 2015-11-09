@@ -13,6 +13,7 @@ namespace foodcourt.Controllers
     [Authorize]
     public class DishController : Controller
     {
+        
         private FoodCourtEntities db = new FoodCourtEntities();
 
         // GET: Dish
@@ -36,6 +37,21 @@ namespace foodcourt.Controllers
             return View(dish);
         }
 
+        public ActionResult GetPhoto(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Dish dish = db.Dish.Find(id);
+            if (dish == null || dish.Photo == null)
+            {
+                return HttpNotFound();
+            }
+
+            return new FileContentResult(dish.Photo, "image/png");
+        }
+
         // GET: Dish/Create
         public ActionResult Create()
         {
@@ -47,10 +63,19 @@ namespace foodcourt.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Name,Description,Price,Date")] Dish dish)
+        public ActionResult Create([Bind(Include = "Id,Name,Description,Price,Date")] Dish dish, HttpPostedFileWrapper photo)
         {
             if (ModelState.IsValid)
             {
+                if(photo != null)
+                {
+                    using (var ms = new System.IO.MemoryStream())
+                    {
+                        photo.InputStream.CopyTo(ms);
+                        dish.Photo = ms.ToArray();
+                    }
+                }
+
                 db.Dish.Add(dish);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -79,11 +104,24 @@ namespace foodcourt.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Name,Description,Price")] Dish dish)
+        public ActionResult Edit([Bind(Include = "Id,Name,Description,Price")] Dish dish, HttpPostedFileWrapper photo)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(dish).State = EntityState.Modified;
+                Dish dishFromDb = db.Dish.Find(dish.Id);
+                dishFromDb.Name = dish.Name;
+                dishFromDb.Description = dish.Description;
+                dishFromDb.Price = dish.Price;
+
+                if (photo != null)
+                {
+                    using (var ms = new System.IO.MemoryStream())
+                    {
+                        photo.InputStream.CopyTo(ms);
+                        dishFromDb.Photo = ms.ToArray();
+                    }
+                }
+
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
