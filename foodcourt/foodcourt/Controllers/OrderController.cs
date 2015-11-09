@@ -40,7 +40,7 @@ namespace foodcourt.Controllers
         // GET: Order/Create
         public ActionResult Create()
         {
-            ViewBag.DishId = new SelectList(db.Dishes, "Id", "Name");
+            ViewBag.DishId = new SelectList(db.Dish, "Id", "Name");
             return View();
         }
 
@@ -58,7 +58,7 @@ namespace foodcourt.Controllers
                 return RedirectToAction("Index");
             }
 
-            ViewBag.DishId = new SelectList(db.Dishes, "Id", "Name", order.DishId);
+            ViewBag.DishId = new SelectList(db.Dish, "Id", "Name", order.DishId);
             return View(order);
         }
 
@@ -74,7 +74,7 @@ namespace foodcourt.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.DishId = new SelectList(db.Dishes, "Id", "Name", order.DishId);
+            ViewBag.DishId = new SelectList(db.Dish, "Id", "Name", order.DishId);
             return View(order);
         }
 
@@ -91,7 +91,7 @@ namespace foodcourt.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.DishId = new SelectList(db.Dishes, "Id", "Name", order.DishId);
+            ViewBag.DishId = new SelectList(db.Dish, "Id", "Name", order.DishId);
             return View(order);
         }
 

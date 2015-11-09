@@ -18,7 +18,7 @@ namespace foodcourt.Controllers
         // GET: Dish
         public ActionResult Index()
         {
-            return View(db.Dishes.ToList());
+            return View(db.Dish.ToList());
         }
 
         // GET: Dish/Details/5
@@ -28,7 +28,7 @@ namespace foodcourt.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Dish dish = db.Dishes.Find(id);
+            Dish dish = db.Dish.Find(id);
             if (dish == null)
             {
                 return HttpNotFound();
@@ -47,11 +47,11 @@ namespace foodcourt.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Name,Description,Price")] Dish dish)
+        public ActionResult Create([Bind(Include = "Id,Name,Description,Price,Date")] Dish dish)
         {
             if (ModelState.IsValid)
             {
-                db.Dishes.Add(dish);
+                db.Dish.Add(dish);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
@@ -66,7 +66,7 @@ namespace foodcourt.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Dish dish = db.Dishes.Find(id);
+            Dish dish = db.Dish.Find(id);
             if (dish == null)
             {
                 return HttpNotFound();
@@ -97,7 +97,7 @@ namespace foodcourt.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Dish dish = db.Dishes.Find(id);
+            Dish dish = db.Dish.Find(id);
             if (dish == null)
             {
                 return HttpNotFound();
@@ -110,8 +110,8 @@ namespace foodcourt.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Dish dish = db.Dishes.Find(id);
-            db.Dishes.Remove(dish);
+            Dish dish = db.Dish.Find(id);
+            db.Dish.Remove(dish);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

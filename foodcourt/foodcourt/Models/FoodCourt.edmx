@@ -22,6 +22,7 @@
           <Property Name="UserName" Type="varchar" MaxLength="50" />
           <Property Name="DishId" Type="int" Nullable="false" />
           <Property Name="State" Type="int" />
+          <Property Name="Date" Type="datetime" />
         </EntityType>
         <Association Name="FK_Order_Dish">
           <End Role="Dish" Type="Self.Dish" Multiplicity="1" />
@@ -74,6 +75,7 @@
           <Property Name="DishId" Type="Int32" Nullable="false" />
           <Property Name="State" Type="Int32" />
           <NavigationProperty Name="Dish" Relationship="foodcourtModel.FK_Order_Dish" FromRole="Order" ToRole="Dish" />
+          <Property Name="Date" Type="DateTime" Precision="3" />
         </EntityType>
         <Association Name="FK_Order_Dish">
           <End Type="foodcourtModel.Dish" Role="Dish" Multiplicity="1" />
@@ -106,6 +108,7 @@
           <EntitySetMapping Name="Order">
             <EntityTypeMapping TypeName="foodcourtModel.Order">
               <MappingFragment StoreEntitySet="Order">
+                <ScalarProperty Name="Date" ColumnName="Date" />
                 <ScalarProperty Name="State" ColumnName="State" />
                 <ScalarProperty Name="DishId" ColumnName="DishId" />
                 <ScalarProperty Name="UserName" ColumnName="UserName" />

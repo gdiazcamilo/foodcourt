@@ -16,7 +16,7 @@ namespace foodcourt.Models
     public partial class FoodCourtEntities : DbContext
     {
         public FoodCourtEntities()
-            : base("name=FoodCourtEntities")
+            : base("name=foodcourtEntities")
         {
         }
     
@@ -25,7 +25,7 @@ namespace foodcourt.Models
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<Dish> Dishes { get; set; }
+        public virtual DbSet<Dish> Dish { get; set; }
         public virtual DbSet<Order> Order { get; set; }
     }
 }
