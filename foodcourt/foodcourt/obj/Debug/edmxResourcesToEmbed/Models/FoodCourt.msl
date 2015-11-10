@@ -14,7 +14,6 @@
     <EntitySetMapping Name="Order">
       <EntityTypeMapping TypeName="foodcourtModel.Order">
         <MappingFragment StoreEntitySet="Order">
-          <ScalarProperty Name="Date" ColumnName="Date" />
           <ScalarProperty Name="State" ColumnName="State" />
           <ScalarProperty Name="DishId" ColumnName="DishId" />
           <ScalarProperty Name="UserName" ColumnName="UserName" />
