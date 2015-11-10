@@ -27,6 +27,7 @@
     <Property Name="DishId" Type="Int32" Nullable="false" />
     <Property Name="State" Type="Int32" />
     <NavigationProperty Name="Dish" Relationship="foodcourtModel.FK_Order_Dish" FromRole="Order" ToRole="Dish" />
+    <Property Name="Date" Type="DateTime" Precision="3" />
   </EntityType>
   <Association Name="FK_Order_Dish">
     <End Type="foodcourtModel.Dish" Role="Dish" Multiplicity="1" />
