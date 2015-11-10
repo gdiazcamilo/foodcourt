@@ -271,6 +271,7 @@
     <Compile Include="Models\Order.cs">
       <DependentUpon>foodcourt.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\OrderViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -286,7 +287,6 @@
       <DependentUpon>FoodCourt.edmx</DependentUpon>
       <LastGenOutput>foodcourt.Context.cs</LastGenOutput>
     </Content>
-    <Content Include="Models\FoodCourt.edmx.sql" />
     <Content Include="Models\foodcourt.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>FoodCourt.edmx</DependentUpon>

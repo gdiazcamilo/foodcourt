@@ -50,7 +50,7 @@ namespace foodcourt.Controllers
         }
         // GET: api/FoodCourtApi
         [System.Web.Http.HttpGet]
-        public List<DishViewModel> listarPlatos()
+        public List<DishViewModel> GetDishes()
         {
             var dishes = new List<DishViewModel>();
             foreach (var dish in db.Dish.ToList())
@@ -69,20 +69,25 @@ namespace foodcourt.Controllers
         // GET: api/FoodCourtApi/5
         [ResponseType(typeof(Dish))]
         [System.Web.Http.HttpGet]
-        public IHttpActionResult obtenerPlatoPorId(int id)
+        public IHttpActionResult GetDishById(int id)
         {
             Dish dish = db.Dish.Find(id);
+            DishViewModel dishViewModel = new DishViewModel();
+            dishViewModel.Name = dish.Name;
+            dishViewModel.Description = dish.Description;
+            dishViewModel.Price = dish.Price;
+            dishViewModel.Photo = dish.Photo;
             if (dish == null)
             {
                 return NotFound();
             }
 
-            return Ok(dish);
+            return Ok(dishViewModel);
         }
 
         // POST: api/Ordesdsdrs
         [ResponseType(typeof(Order))]
-        public IHttpActionResult ordenar(Order order)
+        public IHttpActionResult Order(Order order)
         {
             if (!ModelState.IsValid)
             {
@@ -97,37 +102,65 @@ namespace foodcourt.Controllers
 
         //GET: api/Ordesdsdrs
         [System.Web.Http.HttpGet]
-        public List<Order> listarOrdenes(string username)
+        public List<OrderViewModel> GetOrders(string username)
         {
-            return db.Order.Where(order => order.UserName == username).ToList();
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
+            var orders = new List<OrderViewModel>();
+            foreach (var order in db.Order.Where(order => order.UserName == username).ToList())
             {
-                db.Dispose();
+                OrderViewModel orderViewModel = new OrderViewModel();
+                orderViewModel.DishId = order.DishId;
+                orderViewModel.Id = order.Id;
+                orderViewModel.State = order.State;
+                orderViewModel.UserName = order.UserName;
+                orderViewModel.Date = order.Date;
+
+                DishViewModel dish = new DishViewModel();
+                dish.Id = order.Dish.Id;
+                dish.Name = order.Dish.Name;
+                dish.Description = order.Dish.Description;
+                dish.Price = order.Dish.Price;
+                dish.Photo = order.Dish.Photo;
+
+                orderViewModel.Dish = dish;
+                orders.Add(orderViewModel);
             }
-            base.Dispose(disposing);
+            
+            return orders;
         }
 
-        // GET: api/Ordesdsdrs/5
+         // GET: api/Ordesdsdrs/5
         [ResponseType(typeof(Order))]
         [System.Web.Http.HttpGet]
-        public IHttpActionResult obtenerOrdenPorId(int id)
+        public IHttpActionResult GetOrderById(int id)
         {
             Order order = db.Order.Find(id);
+            OrderViewModel orderViewModel = new OrderViewModel();
+            orderViewModel.DishId = order.DishId;
+            orderViewModel.Id = order.Id;
+            orderViewModel.State = order.State;
+            orderViewModel.UserName = order.UserName;
+            orderViewModel.Date = order.Date;
+
+            DishViewModel dish = new DishViewModel();
+            dish.Id = order.Dish.Id;
+            dish.Name = order.Dish.Name;
+            dish.Description = order.Dish.Description;
+            dish.Price = order.Dish.Price;
+            dish.Photo = order.Dish.Photo;
+
+            orderViewModel.Dish = dish;
+
             if (order == null)
             {
                 return NotFound();
             }
 
-            return Ok(order);
+            return Ok(orderViewModel);
         }
 
         // PUT: api/Ordesdsdrs/5
         [ResponseType(typeof(void))]
-        public IHttpActionResult editarOrden(int id, Order order)
+        public IHttpActionResult EditOrder(int id, Order order)
         {
             if (!ModelState.IsValid)
             {
@@ -162,7 +195,7 @@ namespace foodcourt.Controllers
 
         // DELETE: api/Ordesdsdrs/5
         [ResponseType(typeof(Order))]
-        public IHttpActionResult eliminarOrden(int id)
+        public IHttpActionResult DeleteOrder(int id)
         {
             Order order = db.Order.Find(id);
             if (order == null)
@@ -178,7 +211,7 @@ namespace foodcourt.Controllers
 
         // POST: /Account/Login
         [ResponseType(typeof(LoginViewModel))]
-        public async Task<IHttpActionResult> login(LoginViewModel model)
+        public async Task<IHttpActionResult> Login(LoginViewModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -200,7 +233,7 @@ namespace foodcourt.Controllers
 
         // POST: /Account/Register
         [ResponseType(typeof(RegisterViewModel))]
-        public async Task<IHttpActionResult> registro(RegisterViewModel model)
+        public async Task<IHttpActionResult> Register(RegisterViewModel model)
         {
             if (ModelState.IsValid)
             {
@@ -233,6 +266,15 @@ namespace foodcourt.Controllers
         private bool OrderExists(int id)
         {
             return db.Order.Count(e => e.Id == id) > 0;
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                db.Dispose();
+            }
+            base.Dispose(disposing);
         }
     }
 
