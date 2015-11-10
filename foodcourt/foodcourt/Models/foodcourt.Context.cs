@@ -16,7 +16,7 @@ namespace foodcourt.Models
     public partial class FoodCourtEntities : DbContext
     {
         public FoodCourtEntities()
-            : base("name=FoodCourtEntities")
+            : base("name=foodcourtEntities")
         {
         }
     

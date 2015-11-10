@@ -250,6 +250,7 @@
     <Compile Include="Models\Dish.cs">
       <DependentUpon>foodcourt.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\DishViewModel.cs" />
     <Compile Include="Models\foodcourt.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
