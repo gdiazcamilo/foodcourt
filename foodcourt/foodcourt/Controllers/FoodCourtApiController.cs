@@ -97,9 +97,9 @@ namespace foodcourt.Controllers
 
         //GET: api/Ordesdsdrs
         [System.Web.Http.HttpGet]
-        public IQueryable<Order> listarOrdenes()
+        public List<Order> listarOrdenes(string username)
         {
-            return db.Order;
+            return db.Order.Where(order => order.UserName == username).ToList();
         }
 
         protected override void Dispose(bool disposing)
