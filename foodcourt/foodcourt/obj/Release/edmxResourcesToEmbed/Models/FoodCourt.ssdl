@@ -8,6 +8,7 @@
     <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
     <Property Name="Description" Type="varchar" MaxLength="150" />
     <Property Name="Price" Type="float" />
+    <Property Name="Photo" Type="image" />
   </EntityType>
   <EntityType Name="Order">
     <Key>

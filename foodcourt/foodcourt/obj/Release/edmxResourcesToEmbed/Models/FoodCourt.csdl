@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Schema Namespace="foodcourtModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
-  <EntityContainer Name="foodcourtEntities" annotation:LazyLoadingEnabled="true">
+<Schema Namespace="foodcourtModel" Alias="Self" xmlns="http://schemas.microsoft.com/ado/2009/11/edm" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation">
+  <EntityContainer Name="FoodCourtEntities" annotation:LazyLoadingEnabled="true" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation">
     <EntitySet Name="Dish" EntityType="foodcourtModel.Dish" />
     <EntitySet Name="Order" EntityType="foodcourtModel.Order" />
     <AssociationSet Name="FK_Order_Dish" Association="foodcourtModel.FK_Order_Dish">
@@ -16,6 +16,7 @@
     <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
     <Property Name="Description" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
     <Property Name="Price" Type="Double" />
+    <Property Name="Photo" Type="Binary" MaxLength="Max" FixedLength="false" />
     <NavigationProperty Name="Order" Relationship="foodcourtModel.FK_Order_Dish" FromRole="Dish" ToRole="Order" />
   </EntityType>
   <EntityType Name="Order">
@@ -26,8 +27,8 @@
     <Property Name="UserName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
     <Property Name="DishId" Type="Int32" Nullable="false" />
     <Property Name="State" Type="Int32" />
-    <NavigationProperty Name="Dish" Relationship="foodcourtModel.FK_Order_Dish" FromRole="Order" ToRole="Dish" />
     <Property Name="Date" Type="DateTime" Precision="3" />
+    <NavigationProperty Name="Dish" Relationship="foodcourtModel.FK_Order_Dish" FromRole="Order" ToRole="Dish" />
   </EntityType>
   <Association Name="FK_Order_Dish">
     <End Type="foodcourtModel.Dish" Role="Dish" Multiplicity="1" />

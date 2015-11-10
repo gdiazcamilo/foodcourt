@@ -8,6 +8,7 @@
     <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
     <Property Name="Description" Type="varchar" MaxLength="150" />
     <Property Name="Price" Type="float" />
+    <Property Name="Photo" Type="image" />
   </EntityType>
   <EntityType Name="Order">
     <Key>
@@ -17,6 +18,7 @@
     <Property Name="UserName" Type="varchar" MaxLength="50" />
     <Property Name="DishId" Type="int" Nullable="false" />
     <Property Name="State" Type="int" />
+    <Property Name="Date" Type="datetime" />
   </EntityType>
   <Association Name="FK_Order_Dish">
     <End Role="Dish" Type="Self.Dish" Multiplicity="1" />
