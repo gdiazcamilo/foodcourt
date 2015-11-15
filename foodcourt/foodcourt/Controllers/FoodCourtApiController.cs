@@ -60,6 +60,7 @@ namespace foodcourt.Controllers
                 dishViewModel.Description = dish.Description;
                 dishViewModel.Price = dish.Price;
                 dishViewModel.Photo = dish.Photo;
+                dishViewModel.Id = dish.Id;
                 dishes.Add(dishViewModel);
             }
             
@@ -77,6 +78,7 @@ namespace foodcourt.Controllers
             dishViewModel.Description = dish.Description;
             dishViewModel.Price = dish.Price;
             dishViewModel.Photo = dish.Photo;
+            dishViewModel.Id = dish.Id;
             if (dish == null)
             {
                 return NotFound();
@@ -85,14 +87,21 @@ namespace foodcourt.Controllers
             return Ok(dishViewModel);
         }
 
-        // POST: api/Ordesdsdrs
+        [System.Web.Http.HttpGet]
         [ResponseType(typeof(Order))]
-        public IHttpActionResult Order(Order order)
+        public IHttpActionResult Order(string username, int dishId)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
+
+            Order order = new Order {
+                Date= DateTime.Now,
+                State = 0,
+                UserName=username,
+                DishId=dishId
+            };
 
             db.Order.Add(order);
             db.SaveChanges();
@@ -140,6 +149,45 @@ namespace foodcourt.Controllers
             orderViewModel.State = order.State;
             orderViewModel.UserName = order.UserName;
             orderViewModel.Date = order.Date;
+
+            DishViewModel dish = new DishViewModel();
+            dish.Id = order.Dish.Id;
+            dish.Name = order.Dish.Name;
+            dish.Description = order.Dish.Description;
+            dish.Price = order.Dish.Price;
+            dish.Photo = order.Dish.Photo;
+
+            orderViewModel.Dish = dish;
+
+            if (order == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(orderViewModel);
+        }
+
+        [ResponseType(typeof(Order))]
+        [System.Web.Http.HttpGet]
+        public IHttpActionResult ReceiveOrder(int id)
+        {
+            Order order = db.Order.Find(id);
+
+            if (order == null)
+            {
+                return NotFound();
+            }
+
+            order.State = 3; //recibido
+            db.SaveChanges();
+
+            OrderViewModel orderViewModel = new OrderViewModel();
+            orderViewModel.DishId = order.DishId;
+            orderViewModel.Id = order.Id;
+            orderViewModel.State = order.State;
+            orderViewModel.UserName = order.UserName;
+            orderViewModel.Date = order.Date;
+            
 
             DishViewModel dish = new DishViewModel();
             dish.Id = order.Dish.Id;
@@ -209,53 +257,47 @@ namespace foodcourt.Controllers
             return Ok(order);
         }
 
-        // POST: /Account/Login
-        [ResponseType(typeof(LoginViewModel))]
-        public async Task<IHttpActionResult> Login(LoginViewModel model)
+        [System.Web.Http.HttpGet]
+        public async Task<object> Login(string email, string password)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
 
             // This doesn't count login failures towards account lockout
             // To enable password failures to trigger account lockout, change to shouldLockout: true
-            var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
+            var result = await SignInManager.PasswordSignInAsync(email, password, true, shouldLockout: false);
             switch (result)
             {
                 case SignInStatus.Success:
-                    return Ok(model);
+                    return new { Response = true};
                 case SignInStatus.Failure:
                 default:
-                    return NotFound();
+                    return new { Response = false }; ;
             }
         }
 
-        // POST: /Account/Register
-        [ResponseType(typeof(RegisterViewModel))]
-        public async Task<IHttpActionResult> Register(RegisterViewModel model)
+        [System.Web.Http.HttpGet]
+        public async Task<object> Register(string email, string password)
         {
-            if (ModelState.IsValid)
+           
+            RegisterViewModel model = new RegisterViewModel {
+                Email = email,
+                Password = password
+            };
+            var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+            var result = await UserManager.CreateAsync(user, model.Password);
+            if (result.Succeeded)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
-                var result = await UserManager.CreateAsync(user, model.Password);
-                if (result.Succeeded)
-                {
-                    await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+                await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
 
-                    // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
-                    // Send an email with this link
-                    // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
-                    // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-                    // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
+                // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
+                // Send an email with this link
+                // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
+                // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
+                // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
 
-                    return Ok(model);
-                }
-                return BadRequest("El registro ha fallado.");
+                return new { Response = true }; 
             }
-
-            // If we got this far, something failed, redisplay form
-            return BadRequest("Intente de nuevo.");
+            return new { Response = false };
+           
         }
 
         private bool DishExists(int id)
