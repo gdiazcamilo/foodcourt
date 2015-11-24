@@ -5,15 +5,11 @@ using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Net;
-using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Description;
 using foodcourt.Models;
-using System.Web.Mvc;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity.Owin;
-using Microsoft.AspNet.Identity;
-using Microsoft.Owin.Security;
 using System.Web;
 
 namespace foodcourt.Controllers
@@ -88,8 +84,8 @@ namespace foodcourt.Controllers
         }
 
         [System.Web.Http.HttpGet]
-        [ResponseType(typeof(Order))]
-        public IHttpActionResult Order(string username, int dishId)
+        [ResponseType(typeof(object))]
+        public object Order(string username, int dishId)
         {
             if (!ModelState.IsValid)
             {
@@ -104,9 +100,12 @@ namespace foodcourt.Controllers
             };
 
             db.Order.Add(order);
-            db.SaveChanges();
-
-            return CreatedAtRoute("DefaultApi", new { id = order.Id }, order);
+           int result = db.SaveChanges();
+            if(result > 0)
+            {
+                return new { Response = true };
+            }
+            return new { Response = false };
         }
 
         //GET: api/Ordesdsdrs
@@ -167,43 +166,25 @@ namespace foodcourt.Controllers
             return Ok(orderViewModel);
         }
 
-        [ResponseType(typeof(Order))]
+        [ResponseType(typeof(object))]
         [System.Web.Http.HttpGet]
-        public IHttpActionResult ReceiveOrder(int id)
+        public object ReceiveOrder(int id)
         {
             Order order = db.Order.Find(id);
 
             if (order == null)
             {
-                return NotFound();
+                return new { Response = false };
             }
 
-            order.State = 3; //recibido
-            db.SaveChanges();
+            order.State = 2; //recibido
+            int result = db.SaveChanges();
 
-            OrderViewModel orderViewModel = new OrderViewModel();
-            orderViewModel.DishId = order.DishId;
-            orderViewModel.Id = order.Id;
-            orderViewModel.State = order.State;
-            orderViewModel.UserName = order.UserName;
-            orderViewModel.Date = order.Date;
-            
-
-            DishViewModel dish = new DishViewModel();
-            dish.Id = order.Dish.Id;
-            dish.Name = order.Dish.Name;
-            dish.Description = order.Dish.Description;
-            dish.Price = order.Dish.Price;
-            dish.Photo = order.Dish.Photo;
-
-            orderViewModel.Dish = dish;
-
-            if (order == null)
+            if(result > 0)
             {
-                return NotFound();
+                return new { Response = true };
             }
-
-            return Ok(orderViewModel);
+            return new { Response = false };
         }
 
         // PUT: api/Ordesdsdrs/5
@@ -270,7 +251,7 @@ namespace foodcourt.Controllers
                     return new { Response = true};
                 case SignInStatus.Failure:
                 default:
-                    return new { Response = false }; ;
+                    return new { Response = false };
             }
         }
 
@@ -287,13 +268,6 @@ namespace foodcourt.Controllers
             if (result.Succeeded)
             {
                 await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
-
-                // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
-                // Send an email with this link
-                // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
-                // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-                // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
-
                 return new { Response = true }; 
             }
             return new { Response = false };
